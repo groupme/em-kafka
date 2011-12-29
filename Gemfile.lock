@@ -1,0 +1,26 @@
+PATH
+  remote: .
+  specs:
+    em-kafka (0.0.1)
+      eventmachine (>= 1.0.0.beta.4)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    diff-lcs (1.1.3)
+    eventmachine (1.0.0.beta.4)
+    rspec (2.6.0)
+      rspec-core (~> 2.6.0)
+      rspec-expectations (~> 2.6.0)
+      rspec-mocks (~> 2.6.0)
+    rspec-core (2.6.4)
+    rspec-expectations (2.6.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.6.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  em-kafka!
+  rspec (~> 2.6.0)
