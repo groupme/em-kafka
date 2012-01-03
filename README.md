@@ -21,7 +21,7 @@ You can also use a URL string to connect:
       :url => "kafka://topic@localhost:9092/0"
     )
     consumer.consume do |message|
-      # ...
+      puts message.payload
     end
     
 
