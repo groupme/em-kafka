@@ -52,14 +52,14 @@ describe EM::Kafka::Parser do
     end
   end
 
-  describe "on_complete" do
+  describe "on_offset_update" do
     it "returns the proper offset" do
       offset = 0
       messages = []
       parser = EM::Kafka::Parser.new do |message|
         messages << message
       end
-      parser.on_complete {|new_offset| offset = new_offset }
+      parser.on_offset_update {|new_offset| offset = new_offset }
 
       message_1 = EM::Kafka::Message.new("foo").encode
       message_2 = EM::Kafka::Message.new("barizzle").encode

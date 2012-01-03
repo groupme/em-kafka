@@ -12,7 +12,7 @@ module EventMachine
 
       def encode
         [@type].pack("n") +
-        [@topic.length].pack('n') +
+        [@topic.length].pack("n") +
         @topic +
         [@partition].pack("N") +
         [@offset].pack("Q").reverse + # DIY 64bit big endian integer

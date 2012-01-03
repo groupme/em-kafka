@@ -16,6 +16,7 @@ module EventMachine
           if (parsed_size - 2) > 0
             @size = parsed_size
           else
+            # empty response
             return
           end
         end
@@ -24,33 +25,29 @@ module EventMachine
 
         received_data = @buffer.size + binary.size
         if received_data >= @size
-          parse if @buffer[0, @size]
+          parse(@buffer[6, @size]) # account for 4 byte size and 2 byte junk
         else
           @complete = false
         end
       end
 
-      def on_complete(&callback)
-        @on_complete_callback = callback
+      def on_offset_update(&callback)
+        @on_offset_update_callback = callback
       end
 
       private
 
-      def parse
-        frame = @buffer[6..-1] # account for payload size and 2 byte offset
+      def parse(frame)
         i = 0
-
         while i <= frame.length do
           break unless message_size = frame[i, 4].unpack("N").first
-
           message_data = frame[i, message_size + 4]
           message = Kafka::Message.decode(message_size, message_data)
-          @block.call(message)
           i += message_size + 4
+          @block.call(message)
         end
 
-        self.offset += i
-        complete
+        advance_offset(i)
         reset
       end
 
@@ -60,8 +57,9 @@ module EventMachine
         @buffer = ""
       end
 
-      def complete
-        @on_complete_callback.call(offset) if @on_complete_callback
+      def advance_offset(i)
+        self.offset += i
+        @on_offset_update_callback.call(offset) if @on_offset_update_callback
       end
     end
   end

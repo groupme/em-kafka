@@ -15,11 +15,11 @@ module EventMachine
                     :port
 
       def initialize(options = {})
+        self.host         = options[:host]
+        self.port         = options[:port]
         self.topic        = options[:topic]        || "test"
         self.partition    = options[:partition]    || 0
         self.offset       = options[:offset]       || 0
-        self.host         = options[:host]
-        self.port         = options[:port]
         self.max_size     = options[:max_size]     || EM::Kafka::MESSAGE_MAX_SIZE
         self.request_type = options[:request_type] || EM::Kafka::REQUEST_FETCH
         self.polling      = options[:polling]      || EM::Kafka::CONSUMER_POLLING_INTERVAL
@@ -30,7 +30,7 @@ module EventMachine
       def consume(&block)
         raise ArgumentError.new("block required") unless block_given?
         parser = EM::Kafka::Parser.new(offset, &block)
-        parser.on_complete { |new_offset| self.offset = new_offset }
+        parser.on_offset_update { |i| self.offset = i }
         client.on_data { |binary| parser.on_data(binary) }
         EM.add_periodic_timer(polling) { request_consume }
       end
