@@ -4,9 +4,19 @@ module EventMachine
       include EventMachine::Kafka::EventEmitter
       include EM::Deferrable
 
-      def initialize(host = 'localhost', port = 9092)
-        @host, @port = host, port
+      def initialize(host, port)
+        @host = host || 'localhost'
+        @port = port || 9092
         @closing_connection = false
+        @callback = nil
+      end
+
+      def send_data(data)
+        @connection.send_data(data)
+      end
+
+      def on_data(&block)
+        @callback = block
       end
 
       def connect
@@ -37,27 +47,31 @@ module EventMachine
           end
         end
 
+        @connection.on(:message) do |message|
+          @callback.call(message)
+        end
+
         @connected = false
         @reconnecting = false
 
         return self
       end
-    end
 
-    def connected?
-      @connected
-    end
+      def connected?
+        @connected
+      end
 
-    def close_connection
-      @closing_connection = true
-      @connection.close_connection_after_writing
-    end
+      def close_connection
+        @closing_connection = true
+        @connection.close_connection_after_writing
+      end
 
-    private
+      private
 
-    def reconnect
-      EventMachine::Kafka.logger.debug("Trying to reconnect to Kafka")
-      @connection.reconnect @host, @port
+      def reconnect
+        EventMachine::Kafka.logger.debug("Trying to reconnect to Kafka")
+        @connection.reconnect @host, @port
+      end
     end
   end
 end

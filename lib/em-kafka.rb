@@ -5,12 +5,14 @@ require_relative "em-kafka/event_emitter"
 require_relative "em-kafka/connection"
 require_relative "em-kafka/client"
 require_relative "em-kafka/message"
-require_relative "em-kafka/request"
 require_relative "em-kafka/producer"
 require_relative "em-kafka/consumer"
 
 module EventMachine
   module Kafka
+    MESSAGE_MAX_SIZE = 1048576 # 1 MB
+    CONSUMER_POLLING_INTERVAL = 2 # 2 seconds
+
     REQUEST_PRODUCE      = 0
     REQUEST_FETCH        = 1
     REQUEST_MULTIFETCH   = 2

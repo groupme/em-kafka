@@ -1,6 +1,7 @@
 module EventMachine
   module Kafka
     class Producer
+      require_relative "producer_request"
       attr_accessor :host, :port, :topic, :partition, :client
 
       def initialize(options = {})
@@ -14,7 +15,7 @@ module EventMachine
       end
 
       def deliver(message)
-        request = EM::Kafka::Request.new(topic, partition, message)
+        request = EM::Kafka::ProducerRequest.new(topic, partition, message)
         client.send_data(request.encode)
       end
     end

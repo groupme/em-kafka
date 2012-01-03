@@ -20,7 +20,7 @@ describe EM::Kafka::Message do
              [0].pack("C") +
              [1120192889].pack("N") + "ale"
 
-      message = EM::Kafka::Message.decode(data)
+      message = EM::Kafka::Message.decode(data.size, data)
       message.should be_valid
       message.payload.should == "ale"
       message.checksum.should == 1120192889

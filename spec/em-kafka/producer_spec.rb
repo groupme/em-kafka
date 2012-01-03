@@ -29,7 +29,7 @@ describe EM::Kafka::Producer do
       :partition  => 3
     )
     message = EM::Kafka::Message.new("hello world")
-    request = EM::Kafka::Request.new("testing", 3, message)
+    request = EM::Kafka::ProducerRequest.new("testing", 3, message)
 
     @client.should_receive(:send_data).with(request.encode)
 

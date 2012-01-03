@@ -1,6 +1,6 @@
 module EventMachine
   module Kafka
-    class Request
+    class ProducerRequest
       def initialize(topic, partition, messages)
         @topic, @partition, @messages = topic, partition, messages
       end

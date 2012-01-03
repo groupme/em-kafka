@@ -13,7 +13,6 @@ module EventMachine::Kafka
     end
 
     def receive_data(data)
-      EventMachine::Kafka.logger.info("Received: #{data}")
       emit(:message, data)
     end
 

@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe EM::Kafka::Request do
+describe EM::Kafka::ProducerRequest do
   describe "#encode" do
     it "binary encodes an empty request" do
-      bytes = EM::Kafka::Request.new("test", 0, []).encode
+      bytes = EM::Kafka::ProducerRequest.new("test", 0, []).encode
       bytes.length.should eql(20)
       bytes.should eql("\000\000\000\020\000\000\000\004test\000\000\000\000\000\000\000\000")
     end
 
     it "should binary encode a request with a message, using a specific wire format" do
-      request = EM::Kafka::Request.new("test", 3, EM::Kafka::Message.new("ale"))
+      request = EM::Kafka::ProducerRequest.new("test", 3, EM::Kafka::Message.new("ale"))
       bytes = request.encode
 
       data_size  = bytes[0, 4].unpack("N").shift

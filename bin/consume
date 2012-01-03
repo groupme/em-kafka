@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require_relative "../lib/em-kafka"
+
+topic = ARGV[0] || "test"
+
+EM.run do
+  trap("TERM") { EM.stop; exit; }
+  consumer = EM::Kafka::Consumer.new(:topic => topic)
+  puts "consuming topic #{consumer.topic}"
+  consumer.consume do |message|
+    puts "payload: #{message.payload}"
+  end
+end
+  
