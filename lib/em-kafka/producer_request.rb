@@ -18,7 +18,16 @@ module EventMachine
       private
 
       def encode_messages(messages)
-        message_set = Array(messages).map { |m|
+        messages = [messages].flatten
+        messages = messages.map do |m|
+          if m.is_a?(EM::Kafka::Message)
+            m
+          else
+            EM::Kafka::Message.new(Yajl::Encoder.encode(m))
+          end
+        end
+
+        message_set = messages.map { |m|
           data = m.encode
           [data.length].pack("N") + data
         }.join("")

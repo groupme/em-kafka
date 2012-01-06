@@ -4,17 +4,17 @@ EventMachine driver for [Kafka](http://incubator.apache.org/kafka/index.html).
 
 ## Producer
 
+When using Ruby objects, the payload is encoded to JSON
+
     producer = EM::Kafka::Producer.new("kafka://topic@localhost:9092/0")
-    message = EM::Kafka::Message.new("payload")
-    producer.deliver(message)
+    producer.deliver(:foo => "bar") # payload is {foo:"bar"}
 
 ## Consumer
 
     consumer = EM::Kafka::Consumer.new("kafka://topic@localhost:9092/0")
     consumer.consume do |message|
       puts message.payload
-    end
-    
+    end    
 
 ## Messages
 
@@ -26,6 +26,13 @@ Messages are composed of:
 Change the magic id when the payload format changes:
 
     EM::Kafka::Message.new("payload", 2)
+    
+Pass messages when you want to be specific:
+
+    message_1 = EM::Kafka::Message.new("payload_1", 2)
+    message_2 = EM::Kafka::Message.new("payload_2", 2)
+    producer.deliver([message_1, message_2])
+  
     
 ## Credits
 
