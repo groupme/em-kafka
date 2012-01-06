@@ -4,22 +4,13 @@ EventMachine driver for [Kafka](http://incubator.apache.org/kafka/index.html).
 
 ## Producer
 
-    producer = EM::Kafka::Producer.new(
-      :host       => "localhost",
-      :port       => 9092,
-      :topic      => "example",
-      :partition  => 1
-    )
+    producer = EM::Kafka::Producer.new("kafka://topic@localhost:9092/0")
     message = EM::Kafka::Message.new("payload")
     producer.deliver(message)
 
 ## Consumer
 
-You can also use a URL string to connect:
-
-    consumer = EM::Kafka::Consumer.new(
-      :url => "kafka://topic@localhost:9092/0"
-    )
+    consumer = EM::Kafka::Consumer.new("kafka://topic@localhost:9092/0")
     consumer.consume do |message|
       puts message.payload
     end

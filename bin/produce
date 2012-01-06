@@ -9,7 +9,7 @@ EM.run do
   producer = EM::Kafka::Producer.new(:topic => topic)
   puts "topic is #{producer.topic}"
   
-  EM.add_periodic_timer(2) {
+  EM.add_periodic_timer(0.25) {
     message = EM::Kafka::Message.new("hello-#{Time.now.to_i}")
     producer.deliver(message)
     puts "Sending #{message.payload}"

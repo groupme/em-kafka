@@ -4,12 +4,15 @@ module EventMachine
       require_relative "producer_request"
       attr_accessor :host, :port, :topic, :partition, :client
 
-      def initialize(options = {})
-        raise ArgumentError(":topic required") unless options[:topic]
-        self.host = options[:host]
-        self.port = options[:port]
-        self.topic = options[:topic]
-        self.partition = options[:partition] || 0
+      def initialize(uri)
+        uri = URI(uri)
+        self.host = uri.host
+        self.port = uri.port
+        self.topic = uri.user
+        self.partition = uri.path[1..-1].to_i
+
+        raise ArgumentError("topic required") unless topic
+
         self.client = EM::Kafka::Client.new(host, port)
         client.connect
       end

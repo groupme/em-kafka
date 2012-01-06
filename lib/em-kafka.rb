@@ -1,5 +1,6 @@
 require "eventmachine"
 require "logger"
+require "uri"
 
 require_relative "em-kafka/event_emitter"
 require_relative "em-kafka/connection"

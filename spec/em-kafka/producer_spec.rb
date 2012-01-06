@@ -6,28 +6,24 @@ describe EM::Kafka::Producer do
     EM::Kafka::Client.should_receive(:new).and_return(@client)
   end
 
-  it "defaults to partition 0" do
-    EM::Kafka::Producer.new(:topic => "test").partition.should == 0
-  end
-
   it "should set a topic and partition on initialize" do
-    producer = EM::Kafka::Producer.new(
-      :host       => "localhost",
-      :port       => 9092,
-      :topic      => "testing",
-      :partition  => 3
-    )
+    producer = EM::Kafka::Producer.new("kafka://testing@localhost:9092/3")
     producer.host.should == "localhost"
     producer.port.should == 9092
     producer.topic.should == "testing"
     producer.partition.should == 3
   end
 
+  it "should set default partition to 0" do
+    producer = EM::Kafka::Producer.new("kafka://testing@localhost:9092")
+    producer.host.should == "localhost"
+    producer.port.should == 9092
+    producer.topic.should == "testing"
+    producer.partition.should == 0
+  end
+
   it "should send messages" do
-    producer = EM::Kafka::Producer.new(
-      :topic      => "testing",
-      :partition  => 3
-    )
+    producer = EM::Kafka::Producer.new("kafka://testing@localhost:9092/3")
     message = EM::Kafka::Message.new("hello world")
     request = EM::Kafka::ProducerRequest.new("testing", 3, message)
 

@@ -14,11 +14,13 @@ module EventMachine
                     :host,
                     :port
 
-      def initialize(options = {})
-        self.host         = options[:host]
-        self.port         = options[:port]
-        self.topic        = options[:topic]        || "test"
-        self.partition    = options[:partition]    || 0
+      def initialize(uri, options = {})
+        uri = URI(uri)
+        self.host = uri.host
+        self.port = uri.port
+        self.topic = uri.user
+        self.partition = uri.path[1..-1].to_i
+
         self.offset       = options[:offset]       || 0
         self.max_size     = options[:max_size]     || EM::Kafka::MESSAGE_MAX_SIZE
         self.request_type = options[:request_type] || EM::Kafka::REQUEST_FETCH
