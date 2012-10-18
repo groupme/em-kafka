@@ -2,9 +2,13 @@ module EventMachine::Kafka
   class Connection < EM::Connection
     include EventMachine::Kafka::EventEmitter
 
-    def initialize(host, port)
+    def initialize(*args)
       super
-      @host, @port = host, port
+      @disconnected = false
+    end
+
+    def disconnected?
+      @disconnected
     end
 
     def connection_completed
@@ -17,6 +21,7 @@ module EventMachine::Kafka
     end
 
     def unbind
+      @disconnected = true
       EventMachine::Kafka.logger.info("Disconnected from Kafka")
       emit(:closed)
     end
