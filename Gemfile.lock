@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    em-kafka (0.0.1)
+    em-kafka (0.1.0)
       eventmachine-le
       oj
 
