@@ -7,7 +7,7 @@ describe EM::Kafka::Parser do
   let(:message_3) { EM::Kafka::Message.new("langlang").encode }
   let(:message_4) { EM::Kafka::Message.new("after empty").encode }
   let(:messages)  { [] }
-  let(:parser)    { EM::Kafka::Parser.new do |m| messages << m end }
+  let(:parser)    { EM::Kafka::Parser.new do |batch| messages.concat(batch) end }
 
   let :binary_1 do
     [51].pack("N") +
