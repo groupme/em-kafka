@@ -30,12 +30,12 @@ describe EM::Kafka::ProducerRequest do
     end
 
     it "encodes ruby objects to JSON and inflates message" do
-      message = EM::Kafka::Message.new(Yajl::Encoder.encode(key: "value"))
+      message = EM::Kafka::Message.new(Oj.dump({key: "value"}, mode: :compat))
       request_with_message = EM::Kafka::ProducerRequest.new("test", 3, message)
-      request_with_message.encode.size.should == 44
+      request_with_message.encode.bytesize.should == 44
 
       request = EM::Kafka::ProducerRequest.new("test", 3, key: "value")
-      request.encode.size.should == 44
+      request.encode.bytesize.should == 44
     end
   end
 end

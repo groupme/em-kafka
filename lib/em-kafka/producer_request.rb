@@ -23,7 +23,7 @@ module EventMachine
           if m.is_a?(EM::Kafka::Message)
             m
           else
-            EM::Kafka::Message.new(Yajl::Encoder.encode(m))
+            EM::Kafka::Message.new(Oj.dump(m, mode: :compat))
           end
         end
 

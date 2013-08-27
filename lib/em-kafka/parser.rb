@@ -22,9 +22,7 @@ module EventMachine
         end
 
         @buffer << binary
-
-        received_data = @buffer.size + binary.size
-        if received_data >= @size
+        if @buffer.bytesize >= @size
           parse(@buffer[6, @size]) # account for 4 byte size and 2 byte junk
         else
           @complete = false
@@ -39,13 +37,14 @@ module EventMachine
 
       def parse(frame)
         i = 0
+        messages = []
         while i <= frame.length do
           break unless message_size = frame[i, 4].unpack("N").first
           message_data = frame[i, message_size + 4]
-          message = Kafka::Message.decode(message_size, message_data)
+          messages << Kafka::Message.decode(message_size, message_data)
           i += message_size + 4
-          @block.call(message)
         end
+        @block.call(messages)
 
         advance_offset(i)
         reset
