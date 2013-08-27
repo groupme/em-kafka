@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe EM::Kafka::Consumer do
   before do
-    @client = mock("Client", :connect => true)
+    @client = double("Client", :connect => true)
     EM::Kafka::Client.should_receive(:new).and_return(@client)
   end
 

@@ -1,7 +1,7 @@
 require "eventmachine"
 require "logger"
 require "uri"
-require "yajl"
+require "oj"
 
 require_relative "em-kafka/event_emitter"
 require_relative "em-kafka/connection"

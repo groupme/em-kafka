@@ -5,7 +5,7 @@ require "em-kafka/version"
 Gem::Specification.new do |s|
   s.name        = "em-kafka"
   s.version     = EventMachine::Kafka::VERSION
-  s.authors     = ["Brandon Keene"]
+  s.authors     = ["Brandon Keene", "Evgeniy Dolzhenko", "Dimitrij Denissenko"]
   s.email       = ["bkeene@gmail.com"]
   s.homepage    = ""
   s.summary     = %q{EventMachine Kafka driver}
@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency "eventmachine", ">= 1.0.0.beta.4"
-  s.add_dependency "yajl-ruby",    ">= 0.8.2"
-  s.add_development_dependency "rspec", "~> 2.6.0"
+  s.add_dependency "eventmachine-le"
+  s.add_dependency "oj"
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "rake"
 end
