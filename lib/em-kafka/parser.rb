@@ -22,9 +22,7 @@ module EventMachine
         end
 
         @buffer << binary
-
-        received_data = @buffer.size + binary.size
-        if received_data >= @size
+        if @buffer.bytesize >= @size
           parse(@buffer[6, @size]) # account for 4 byte size and 2 byte junk
         else
           @complete = false
