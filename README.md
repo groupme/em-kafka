@@ -1,6 +1,6 @@
 # EM-Kafka
 
-EventMachine driver for [Kafka](http://incubator.apache.org/kafka/index.html).
+[EventMachine](https://github.com/eventmachine/eventmachine) driver for [Kafka](http://incubator.apache.org/kafka/index.html).
 
 ## Producer
 
